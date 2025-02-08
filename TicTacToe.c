@@ -1,14 +1,22 @@
 #include <stdio.h>
 
 void displayBoard(char board[3][3]) {
+    printf("_____________\n");
+    printf("_|_1_|_2_|_3_");
 	printf("\n");
 	for(int i=0;i<3;i++){
+        printf("%d|", i+1);
 		for(int j=0;j<3;j++){
-			printf("%c", board[i][j]);
-			if (j < 2) printf(" | ");
+			printf(" %c", board[i][j]);
+			if (j < 2) {
+                printf(" |");
+                if (j == 2) {
+                    printf("  |\n");
+                }
+            }
 		}
 		printf("\n");
-		if (i < 2) printf("---------\n");
+		if (i < 2) printf("-|---+---+---\n");
 	}
 }
 
@@ -18,13 +26,16 @@ void playerMove(char board[3][3], char player) {
 	while(1){
 		printf("\nPlayer %c, choose a location: ", player);
 		scanf("%d %d", &x, &y);
-		
-		if(x < 3 && x >= 0 && y < 3 && y >= 0){
-			if(board[x][y] == ' '){
-				board[x][y] = player;
+		printf("\n");
+		if(x <= 3 && x > 0 && y <= 3 && y > 0){
+			if(board[x-1][y-1] == ' '){
+				board[x-1][y-1] = player;
 				break;
 			}
-		}else printf("Try again.");	
+		}else {
+            printf("Try again.\n");
+            displayBoard(board);
+        }	
 	}
 }
 
@@ -59,11 +70,37 @@ int checkWinner(char board[3][3]) {
     return 3;
 }
 
-main(){
+int main(){
 	
 	char board[3][3] = {{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
-	char player = 'X';
-	
+	char player;
+    char seLect_player;
+    int state = 0;
+    printf("--------------------------------\n");
+    printf(" Welcome to Tic Tac Toe game!!! \n");
+    printf("--------------------------------\n");
+    while (state == 0) {
+        printf("select player X or O : ");
+        scanf("%c", &seLect_player);
+        getchar();
+        if (seLect_player == 'x') seLect_player = 'X';
+        if (seLect_player == 'o') seLect_player = 'O';
+        switch (seLect_player)
+        {
+        case 'X':
+            player = seLect_player;
+            state = 1;
+            break;
+        case 'O':
+            player = seLect_player;
+            state = 1;
+            break;
+        default:
+            printf("Please select player again\n");
+            break;
+        } 
+
+    }
 	int gameStatus = 0;
 	
 	while (gameStatus == 0) {
@@ -82,5 +119,7 @@ main(){
     } else {
         printf("It's a draw!\n");
     }
+
+    return 0;
 
 }
